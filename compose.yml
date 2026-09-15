@@ -16,7 +16,8 @@ services:
       test: ["CMD", "healthcheck.sh"]
       interval: 10s
       timeout: 5s
-      retries: 20
+      retries: 30
+      start_period: 240s
 
     networks:
       - campuslab-network
