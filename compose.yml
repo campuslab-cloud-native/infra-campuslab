@@ -7,15 +7,105 @@ services:
 
     environment:
       ORACLE_PASSWORD: ${ORACLE_PASSWORD}
-      APP_USER: ${ORACLE_APP_USER}
-      APP_USER_PASSWORD: ${ORACLE_APP_PASSWORD}
-
-    ports:
-      - "1521:1521"
 
     volumes:
       - oracle-data:/opt/oracle/oradata
       - ./oracle/init:/container-entrypoint-initdb.d
 
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+    networks:
+      - campuslab-network
+
+
+  catalog:
+    build:
+      context: ../ms-campuslab-catalog
+      dockerfile: Dockerfile
+
+    container_name: campuslab-catalog
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: 8082
+
+      DB_URL: jdbc:oracle:thin:@oracle:1521/FREEPDB1
+      DB_USERNAME: CAMPUSLAB_CATALOG
+      DB_PASSWORD: ${CATALOG_DB_PASSWORD}
+
+      DDL_AUTO: update
+      SHOW_SQL: false
+
+    depends_on:
+      oracle:
+        condition: service_healthy
+
+    networks:
+      - campuslab-network
+
+
+  bookings:
+    build:
+      context: ../ms-campuslab-bookings
+      dockerfile: Dockerfile
+
+    container_name: campuslab-bookings
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: 8081
+
+      DB_URL: jdbc:oracle:thin:@oracle:1521/FREEPDB1
+      DB_USERNAME: CAMPUSLAB_BOOKINGS
+      DB_PASSWORD: ${BOOKINGS_DB_PASSWORD}
+
+      DDL_AUTO: update
+      SHOW_SQL: false
+
+    depends_on:
+      oracle:
+        condition: service_healthy
+
+    networks:
+      - campuslab-network
+
+
+  bff:
+    build:
+      context: ../ms-campuslab-bff
+      dockerfile: Dockerfile
+
+    container_name: campuslab-bff
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: 8080
+
+      AZURE_ISSUER_URI: ${AZURE_ISSUER_URI}
+      AZURE_AUDIENCE: ${AZURE_AUDIENCE}
+
+      CATALOG_SERVICE_URL: http://catalog:8082
+      BOOKINGS_SERVICE_URL: http://bookings:8081
+
+    depends_on:
+      - catalog
+      - bookings
+
+    ports:
+      - "8080:8080"
+
+    networks:
+      - campuslab-network
+
+
 volumes:
   oracle-data:
+
+
+networks:
+  campuslab-network:
+    driver: bridge
