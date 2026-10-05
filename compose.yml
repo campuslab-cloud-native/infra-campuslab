@@ -73,6 +73,31 @@ services:
 
     networks:
       - campuslab-network
+  
+  report:
+    build:
+      context: ../ms-campuslab-report
+    container_name: campuslab-report
+    environment:
+      SERVER_PORT: 8084
+      BOOKINGS_SERVICE_URL: http://bookings:8081
+      CATALOG_SERVICE_URL: http://catalog:8082
+    depends_on:
+      - bookings
+      - catalog
+
+  audit:
+    build:
+      context: ../ms-campuslab-audit
+    container_name: campuslab-audit
+    environment:
+      SERVER_PORT: 8085
+      DB_URL: jdbc:oracle:thin:@oracle:1521/FREEPDB1
+      DB_USERNAME: CAMPUSLAB_AUDIT
+      DB_PASSWORD: ${ORACLE_PASSWORD}
+    depends_on:
+      oracle:
+        condition: service_healthy
 
 
   bff:
