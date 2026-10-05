@@ -85,6 +85,8 @@ services:
     depends_on:
       - bookings
       - catalog
+    networks:
+      - campuslab-network
 
   audit:
     build:
@@ -98,6 +100,8 @@ services:
     depends_on:
       oracle:
         condition: service_healthy
+    networks:
+      - campuslab-network
 
 
   bff:
@@ -116,10 +120,14 @@ services:
 
       CATALOG_SERVICE_URL: http://catalog:8082
       BOOKINGS_SERVICE_URL: http://bookings:8081
+      REPORT_SERVICE_URL: http://report:8084
+      AUDIT_SERVICE_URL: http://audit:8085
 
     depends_on:
       - catalog
       - bookings
+      - report
+      - audit
 
     ports:
       - "8080:8080"
