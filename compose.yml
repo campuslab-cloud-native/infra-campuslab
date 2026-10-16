@@ -66,6 +66,7 @@ services:
 
       DDL_AUTO: update
       SHOW_SQL: false
+      CATALOG_SERVICE_URL: http://catalog:8082
 
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
@@ -75,6 +76,8 @@ services:
     depends_on:
       oracle:
         condition: service_healthy
+      catalog:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
 
