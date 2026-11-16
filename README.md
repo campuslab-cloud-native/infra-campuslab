@@ -67,6 +67,17 @@ Kafka UI
 /kafka/compose.yml
 ```
 
+Para iniciar la base Oracle local, define `ORACLE_PASSWORD`,
+`CATALOG_DB_PASSWORD`, `BOOKINGS_DB_PASSWORD` y `AUDIT_DB_PASSWORD` en un
+archivo `.env` local no versionado. El script de inicialización usa esas
+variables para crear los usuarios de los servicios.
+
+Los scripts de inicialización de Oracle solo se ejecutan cuando se crea el
+volumen de datos por primera vez. Si el volumen ya existe, la rotación de
+contraseñas debe autorizarse y ejecutarse manualmente en Oracle, coordinada con
+la actualización de los secretos de despliegue. No se modifican aquí las
+credenciales de bases desplegadas.
+
 ## API Gateway
 
 Tipo:
