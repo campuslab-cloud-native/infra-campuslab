@@ -182,4 +182,4 @@ networks:
 
   kafka-net:
     external: true
-    name: campuslab-kafka_kafka-net
+    name: ms-campuslab-kafka_kafka-net
