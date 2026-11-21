@@ -85,6 +85,7 @@ services:
 
     networks:
       - campuslab-network
+      - kafka-net
   
   report:
     build:
@@ -115,6 +116,7 @@ services:
         condition: service_healthy
     networks:
       - campuslab-network
+      - kafka-net
 
   notify:
     build:
@@ -173,6 +175,11 @@ volumes:
   oracle-data:
 
 
+
 networks:
   campuslab-network:
     driver: bridge
+
+  kafka-net:
+    external: true
+    name: campuslab-kafka_kafka-net
