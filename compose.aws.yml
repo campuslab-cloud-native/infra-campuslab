@@ -1,0 +1,11 @@
+services:
+  bookings:
+    networks: !override
+      - campuslab-network
+
+  audit:
+    networks: !override
+      - campuslab-network
+
+networks:
+  kafka-net: !reset null
