@@ -27,6 +27,7 @@ services:
 
 
   catalog:
+    image: campuslab/catalog:${CAMPUSLAB_VERSION:-1.0.0}
     build:
       context: ../ms-campuslab-catalog
       dockerfile: Dockerfile
@@ -53,6 +54,7 @@ services:
 
 
   bookings:
+    image: campuslab/bookings:${CAMPUSLAB_VERSION:-1.0.0}
     build:
       context: ../ms-campuslab-bookings
       dockerfile: Dockerfile
@@ -88,6 +90,7 @@ services:
       - kafka-net
   
   report:
+    image: campuslab/report:${CAMPUSLAB_VERSION:-1.0.0}
     build:
       context: ../ms-campuslab-report
     container_name: campuslab-report
@@ -102,6 +105,7 @@ services:
       - campuslab-network
 
   audit:
+    image: campuslab/audit:${CAMPUSLAB_VERSION:-1.0.0}
     build:
       context: ../ms-campuslab-audit
     container_name: campuslab-audit
@@ -119,6 +123,7 @@ services:
       - kafka-net
 
   notify:
+    image: campuslab/notify:${CAMPUSLAB_VERSION:-1.0.0}
     build:
       context: ../ms-campuslab-notify
       dockerfile: Dockerfile
@@ -137,6 +142,7 @@ services:
 
 
   bff:
+    image: campuslab/bff:${CAMPUSLAB_VERSION:-1.0.0}
     build:
       context: ../ms-campuslab-bff
       dockerfile: Dockerfile
