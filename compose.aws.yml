@@ -4,8 +4,12 @@ services:
       - campuslab-network
 
   audit:
+    restart: unless-stopped
     networks: !override
       - campuslab-network
+
+  report:
+    restart: unless-stopped
 
 networks:
   kafka-net: !reset null
