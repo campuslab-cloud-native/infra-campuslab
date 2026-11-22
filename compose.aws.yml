@@ -10,6 +10,8 @@ services:
 
   report:
     restart: unless-stopped
+    networks: !override
+      - campuslab-network
 
 networks:
   kafka-net: !reset null
